@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Customer = require("../models/customerMOdel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 //@desc Create to Customer
 //@route POST /api/customers/createCustomer
 //@access private
