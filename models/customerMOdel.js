@@ -31,6 +31,21 @@ const customerSchema = mongoose.Schema(
         },
         pincode: {
             type: Number
+        },
+        fcm_token: {
+            type: String
+        },
+        active: {
+            type: Boolean,
+            default: true,
+        },
+        profile_image: {
+             public_id: {
+                type: String,
+            },
+            url: {
+                type: String,
+            },
         }
     },
     {

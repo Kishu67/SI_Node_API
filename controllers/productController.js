@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Product = require("../models/productModel");
 
-//@desc Create to Product
+//@desc Create Product
 //@route POST /api/products/createProduct
 //@access private
 const createProduct = asyncHandler(async (req, res) => {
@@ -84,4 +84,12 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Product Deleted Successfully !" });
 });
 
-module.exports = { createProduct, allProductList, updateProduct, deleteProduct, getSingleProduct };
+//@desc Delete single, multiple and many Product
+//@route POST /api/products/deleteProductMany
+//@access private
+const deleteProductMany = asyncHandler(async (req, res) => {
+    await Product.deleteMany({ _id: req.body.allIDs });
+    res.status(200).json({ message: "Products Deleted Successfully !" });
+});
+
+module.exports = { createProduct, allProductList, updateProduct, deleteProduct, getSingleProduct, deleteProductMany };

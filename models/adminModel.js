@@ -11,20 +11,8 @@ const adminSchema = mongoose.Schema(
         admin_email: {
             type: String
         },
-        admin_address1: {
+        admin_full_address: {
             type: String
-        },
-        admin_address2: {
-            type: String
-        },
-        admin_city: {
-            type: String
-        },
-        admin_state: {
-            type: String
-        },
-        admin_pincode: {
-            type: Number
         },
         admin_mobileno: {
             type: Number

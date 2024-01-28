@@ -99,17 +99,16 @@ const monthWiseCountUPI = asyncHandler(async (req, res) => {
 //@access private
 const dateWiseCountUPI = asyncHandler(async (req, res) => {
 
-    var company_id = company._id
-    var start = new Date(req.body.from_date);
+    var start = new Date();
     start.setHours(0, 0, 0, 0);
-    var end = new Date(req.body.to_date);
+    var end = new Date();
     end.setHours(23, 59, 59, 999);
 
     const dateWiseCountCustomer = await Customer.aggregate([
         {
             $match: {
                 $and: [
-                    { entry_date: { $gt: start, $lt: end } }, { company_id: "" + company_id + "" }
+                    { entry_date: { $gt: start, $lt: end } }
                 ]
             }
         },
@@ -119,12 +118,12 @@ const dateWiseCountUPI = asyncHandler(async (req, res) => {
             {
                 _id:
                 {
-                    day: { $dayOfMonth: "$entry_date" },
-                    month: { $month: "$entry_date" },
-                    year: { $year: "$entry_date" }
+                    day: { $dayOfMonth: "$createdAt" },
+                    month: { $month: "$createdAt" },
+                    year: { $year: "$createdAt" }
                 },
                 count: { $sum: 1 },
-                entry_date: { $first: "$entry_date" }
+                entry_date: { $first: "$createdAt" }
             }
         },
         {
@@ -132,7 +131,7 @@ const dateWiseCountUPI = asyncHandler(async (req, res) => {
             {
                 entry_date:
                 {
-                    $dateToString: { format: "%Y-%m-%d", date: "$entry_date" }
+                    $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
                 },
                 count: 1,
                 _id: 0
@@ -144,7 +143,7 @@ const dateWiseCountUPI = asyncHandler(async (req, res) => {
         {
             $match: {
                 $and: [
-                    { entry_date: { $gt: start, $lt: end } }, { company_id: "" + company_id + "" }
+                    { entry_date: { $gt: start, $lt: end } }
                 ]
             }
         },
@@ -179,7 +178,7 @@ const dateWiseCountUPI = asyncHandler(async (req, res) => {
         {
             $match: {
                 $and: [
-                    { entry_date: { $gt: start, $lt: end } }, { company_id: "" + company_id + "" }
+                    { entry_date: { $gt: start, $lt: end } }
                 ]
             }
         },

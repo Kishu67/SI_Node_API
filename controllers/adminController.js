@@ -7,7 +7,7 @@ const Admin = require("../models/adminModel");
 //@route POST /api/admins/register
 //@access public
 const registerAdmin = asyncHandler(async (req, res) => {
-    const { admin_name, admin_password, admin_email, admin_address1, admin_address2, admin_city, admin_state, admin_pincode, admin_mobileno, admin_telno } = req.body;
+    const { admin_name, admin_password, admin_email, admin_full_address, admin_mobileno, admin_telno } = req.body;
 
     //Hash password
     const hashedPassword = await bcrypt.hash(admin_password, 10);
@@ -15,11 +15,7 @@ const registerAdmin = asyncHandler(async (req, res) => {
         admin_name,
         admin_password: hashedPassword,
         admin_email,
-        admin_address1,
-        admin_address2,
-        admin_city,
-        admin_state,
-        admin_pincode,
+        admin_full_address,
         admin_mobileno,
         admin_telno
     });
@@ -47,11 +43,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
                     _id: admin.id,
                     admin_name: admin.admin_name,
                     admin_email: admin.admin_email,
-                    admin_address1: admin.admin_address1,
-                    admin_address2: admin.admin_address2,
-                    admin_city: admin.admin_city,
-                    admin_state: admin.admin_state,
-                    admin_pincode: admin.admin_pincode,
+                    admin_full_address: admin.admin_full_address,
                     admin_mobileno: admin.admin_mobileno,
                     admin_telno: admin.admin_telno
                 },
@@ -109,4 +101,5 @@ const updateAdmin = asyncHandler(async (req, res) => {
         res.status(400).json({ message: "Not Updated Admin !" });
     }
 });
+
 module.exports = { registerAdmin, loginAdmin, currentAdmin, getsingleAdmin, updateAdmin };

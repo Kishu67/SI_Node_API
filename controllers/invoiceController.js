@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Invoice = require("../models/invoiceModel");
+const mongo = require('mongodb');
 
-//@desc Create to Invoice
+//@desc Create Invoice
 //@route POST /api/invoices/createInvoice
 //@access private
 const createInvoice = asyncHandler(async (req, res) => {
@@ -10,7 +11,7 @@ const createInvoice = asyncHandler(async (req, res) => {
     let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
         'abcdefghijklmnopqrstuvwxyz' + '0123456789' + '@#$%^&*';
 
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 6; i++) {
         let char = Math.floor(Math.random()
             * str.length + 1);
 
@@ -21,7 +22,7 @@ const createInvoice = asyncHandler(async (req, res) => {
     let str1 = 'abcdefghijklmnopqrstuvwxyz' +
         'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + '@#$%^&*' + '0123456789';
 
-    for (let i = 1; i <= 30; i++) {
+    for (let i = 1; i <= 20; i++) {
         let char = Math.floor(Math.random()
             * str1.length + 1);
 
@@ -70,7 +71,7 @@ const getSingleInvoice = asyncHandler(async (req, res) => {
     res.status(200).json(invoice);
 });
 
-//@desc Get all Invoice
+//@desc Get all Invoice Lists
 //@route GET /api/invoices/invoicesLists
 //@access private
 const allInvoiceList = asyncHandler(async (req, res) => {
@@ -116,19 +117,31 @@ const deleteInvoice = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Invoice Deleted Successfully !" });
 });
 
-// @desc Get Invoice of individual Customer
-// @route GET /api/invoices/singleInvoiceCustomerList/:id
+//@desc Delete single, multiple and many Invioce
+//@route POST /api/invoices/deleteInvoiceMany
+//@access private
+const deleteInvoiceMany = asyncHandler(async (req, res) => {
+    await Invoice.deleteMany({ _id: req.body.allIDs });
+    res.status(200).json({ message: "Invoices Deleted Successfully !" });
+});
+
+// @desc Get Individual Customer invoice Lists
+// @route GET /api/invoices/singleCustomerInvoiceList/:id
 // @access private
 const getSingleInvoiceCustomerList = asyncHandler(async (req, res) => {
     const invoice = await Invoice.find();
+    let custInvoiceListArray = [];
     for (const val of invoice) {
         if (val.customerDetails._id === req.params.id) {
-            res.status(200).json(invoice);
-        } else {
-            res.status(404);
-            throw new Error("The invoice of this customer has not been generated");
+            custInvoiceListArray.push(val)
         }
+    }
+    if (custInvoiceListArray && custInvoiceListArray.length > 0) {
+        res.status(200).json({ Invoices: custInvoiceListArray });
+    } else {
+        res.status(400);
+        throw new Error("This customer invoice is not generated");
     }
 });
 
-module.exports = { createInvoice, allInvoiceList, getSingleInvoice, updateInvoice, deleteInvoice, getSingleInvoiceCustomerList };
+module.exports = { createInvoice, allInvoiceList, getSingleInvoice, updateInvoice, deleteInvoice, getSingleInvoiceCustomerList, deleteInvoiceMany };

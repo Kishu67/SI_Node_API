@@ -18,6 +18,7 @@ const invoiceSchema = mongoose.Schema(
             pincode: { type: String },
             mobileNo: { type: String },
             emailId: { type: String },
+            fcm_token: { type: String },
             createdAt: { type: String },
             updatedAt: { type: String },
             __v: { type: String }
