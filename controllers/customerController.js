@@ -230,8 +230,6 @@ const updateCustomerImage = asyncHandler(async (req, res) => {
         url: cloud.secure_url,
     }
 
-    res.status(200).json({ message: "Customer profile uploaded Successfully !", updatedCustomer: req.body.profile_image });
-    return false;
     const updatedCustomerImage = await Customer.findByIdAndUpdate(
         req.params.id,
         req.body,
